@@ -14,8 +14,10 @@ async def get_account_coins():
     coins = [coin for coin in coins['balances'] if float(coin['free'])]
     await client.close_connection()
 
+
 async def get_price():
     pass
+
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()

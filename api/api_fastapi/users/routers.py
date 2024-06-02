@@ -10,8 +10,15 @@ async def get_user_manager(user_db=Depends(get_user_adapter)):
     um = get_user_manager_class()
     yield um(user_db)
 
-fastapi_user = FastAPIUsers(
+
+fastapi_users_obj = FastAPIUsers(
     get_user_manager,
     get_auth_backends(),
-
 )
+
+
+def get_routers():
+    routers = [{'prefix': f'/{auth_backend.name}',
+                'router': fastapi_users_obj.get_auth_router(auth_backend)} for auth_backend in
+               get_auth_backends()]
+    return routers

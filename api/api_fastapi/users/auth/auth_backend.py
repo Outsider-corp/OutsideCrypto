@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Iterable, Sequence
 
 from fastapi_users.authentication import AuthenticationBackend
 
@@ -10,5 +10,5 @@ auth_backend = AuthenticationBackend(name='auth_backend',
                                      get_strategy=get_strategy)
 
 
-def get_auth_backends() -> Iterable:
+def get_auth_backends() -> Sequence[AuthenticationBackend]:
     return [auth_backend]

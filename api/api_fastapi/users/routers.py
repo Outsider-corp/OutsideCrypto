@@ -22,8 +22,8 @@ fastapi_users_obj = FastAPIUsers(
 
 def get_auth_routers() -> List[Dict]:
     routers = [{'prefix': f'/{auth_backend.name}',
-                'router': fastapi_users_obj.get_auth_router(auth_backend)} for auth_backend in
-               get_auth_backends()]
+                'router': fastapi_users_obj.get_auth_router(auth_backend)} for
+               auth_backend in get_auth_backends()]
     return routers
 
 

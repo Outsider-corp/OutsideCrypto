@@ -11,7 +11,7 @@ class Wallet(Base):
     user_id = Column(Integer, ForeignKey('user.user_id'), index=True)
     wallet_address = Column(String, nullable=False)
     wallet_name = Column(String, nullable=False)
-    wallet_soft = Column(Boolean, default=True, nullable=False)
+    wallet_soft = Column(Boolean, default=True)
     blockchain_id = Column(Integer, ForeignKey('blockchain.blockchain_id'))
 
     user = relationship('User', back_populates='wallet')

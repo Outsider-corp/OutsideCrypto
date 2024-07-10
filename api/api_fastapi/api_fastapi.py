@@ -4,7 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
 from api.api_fastapi.responses import MainJSONResponce
-from api.api_fastapi.users.routers import get_auth_routers, get_register_router, get_verify_router
+from api.api_fastapi.users.routers import (get_auth_routers,
+                                           get_register_router,
+                                           get_verify_router)
+from api.api_fastapi.wallets.routers import get_wallet_router
 from database.database import engine
 from database.users.adapters import get_async_session
 from database.users.models import User
@@ -26,6 +29,7 @@ app.include_router(router=get_verify_router().get('router'),
                    prefix=get_verify_router().get('prefix'),
                    tags=['verify'])
 
+app.include_router(router=get_wallet_router())
 
 @app.on_event('startup')
 async def startup():

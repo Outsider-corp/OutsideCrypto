@@ -1,16 +1,9 @@
-from typing import AsyncGenerator
-
 from fastapi import Depends
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.database import async_session_maker
+from database.database import get_async_session
 from database.users.models import User
-
-
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session_maker() as session:
-        yield session
 
 
 async def get_user_adapter(session: AsyncSession = Depends(get_async_session)):

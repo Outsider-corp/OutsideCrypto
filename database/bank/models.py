@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, String, Boolean
+from sqlalchemy import Column, Integer, ForeignKey, String, Boolean, TIMESTAMP
 from sqlalchemy.orm import relationship
 
 from database.database import Base
@@ -13,6 +13,7 @@ class Wallet(Base):
     wallet_name = Column(String, nullable=False)
     wallet_soft = Column(Boolean, default=True)
     blockchain_id = Column(Integer, ForeignKey('blockchain.blockchain_id'))
+    added_at = Column(TIMESTAMP)
 
     user = relationship('User', back_populates='wallet')
     blockchain = relationship('Blockchain', back_populates='wallet')

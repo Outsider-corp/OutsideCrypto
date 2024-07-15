@@ -1,7 +1,9 @@
 from fastapi import FastAPI, Depends
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis.asyncio import from_url
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Session
 
 from api.api_fastapi.responses import MainJSONResponce
 from api.api_fastapi.users.routers import (get_auth_routers,
@@ -11,6 +13,7 @@ from api.api_fastapi.wallets.routers import get_wallet_router
 from database.database import engine
 from database.users.adapters import get_async_session
 from database.users.models import User
+from settings import REDIS_URL, REDIS_PORT
 
 app = FastAPI(
     default_response_class=MainJSONResponce,
@@ -31,15 +34,23 @@ app.include_router(router=get_verify_router().get('router'),
 
 app.include_router(router=get_wallet_router())
 
+
 @app.on_event('startup')
-async def startup():
+async def start_postgre():
     await engine.connect()
+
+
+@app.on_event('startup')
+async def start_redis():
+    redis = from_url(REDIS_URL, port=REDIS_PORT,
+                     encoding='utf8', decode_responses=True)
+    FastAPICache.init(RedisBackend(redis), prefix='redis')
 
 
 #
 @app.on_event('shutdown')
 async def shutdown():
-    await engine.disconnect()
+    await engine.dispose()
 
 
 @app.get('/')
